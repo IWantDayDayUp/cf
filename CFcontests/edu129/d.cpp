@@ -5,11 +5,7 @@ using namespace std;
 using i64 = long long;
 
 void slove() {
-    queue<pair<int, int>> q;
-    q.emplace(1, 0);
-
-    cout << q.front().first << q.front().second << endl;
-    cout << q.size() << endl;
+    
 }
 
 int main() {
