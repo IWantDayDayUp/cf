@@ -45,6 +45,7 @@
 ```c++
 int n = 1000, k = 3;
 vector<int> dis(n, -1);
+// 自己到自己, 距离为0
 dis[k - 1] = 0;
 
 // 邻接矩阵
@@ -55,7 +56,7 @@ for (auto & e : edges)
     adj[e[1]].emplace_back(make_pair(e[0], e[2]));
 }
 
-priority<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q;
+priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q;
 q.emplace(0, k);
 
 while (!q.empty())

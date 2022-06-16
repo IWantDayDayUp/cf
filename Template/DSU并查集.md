@@ -1,3 +1,8 @@
+# DSU 并查集
+
+## 1. 模板
+
+```c++
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -24,3 +29,6 @@ struct DSU
         return find(x) == find(y);
     }
 };
+```
+
+## 2. 使用
