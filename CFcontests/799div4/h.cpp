@@ -1,34 +1,55 @@
-#include <iostream>
-#include <vector>
-#include <queue>
+#include <bits/stdc++.h>
+
 using namespace std;
 
-int main()
-{
+using i64 = long long;
+
+void slove() {
+    int n;
+    cin >> n;
+    map<int, vector<int>> mp;
+    for (int i = 1; i <= n; i++)
+    {
+        int num;
+        cin >> num;
+        mp[num].emplace_back(i);
+    }
+
+    int max = 0, ans = -1, l = -1, r = -1;
+    for (auto &p : mp)
+    {
+        int t = -INT_MAX, pos = -1;
+        for (int i = 0; i < p.second.size(); i++)
+        {
+            if (p.second[i] - 2 * i > t)
+            {
+                t = p.second[i] - 2 * i;
+                pos = p.second[i];
+            }
+
+            int cur = 2 * i - p.second[i] + t + 1;
+            if (cur > max)
+            {
+                max = cur;
+                ans = p.first;
+                l = pos;
+                r = p.second[i];
+            }
+        }
+    }
+
+    cout << ans << ' ' << l << ' ' << r << endl;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
     int t;
     cin >> t;
-    auto cmp = [](pair<int, int> &left, pair<int, int> &right)
-    { return left.first > right.first; };
-    for (int idx = 0; idx < t; ++idx)
-    {
-        int r;
-        cin >> r;
-        vector<int> input(r);
-        for (int i = 0; i < r; ++i)
-            cin >> input[i];
-        // process
-        int res = input[0];
-        int cur = 1, L = 0, R = 0;
-
-        priority_queue<pair<int, int>, vector<pair<int, int>, decltype(cmp)>> pq(cmp);
-        for (int right = 0; right < r; ++right)
-        {
-            pq.push()
-        }
-        for (int left = 0; left < r; ++left)
-        {
-        }
-        cout << res << L << R;
+    while (t--) {
+        slove();
     }
+
     return 0;
 }

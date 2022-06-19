@@ -1,0 +1,1 @@
+{"name":"Local: 1634C","url":"d:\\CF\\Constructive Algorithm\\1634C.cpp","tests":[{"id":1655555991388,"input":"4\n1 1\n2 2\n3 3\n3 1\n","output":"YES\n1 \nYES\n1 3 \n2 4 \nNO\nYES\n1 \n2 \n3 "}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\CF\\Constructive Algorithm\\1634C.cpp","group":"local","local":true}
