@@ -1,4 +1,4 @@
-# 阶乘 组合数 快速幂
+# math
 
 ## 1. 阶乘
 
@@ -46,8 +46,6 @@ int fast_pow(int a, int p)
 
 $C(n, k) = \frac{n!}{(n - k)! * k!}(k <= n)$
 
-## 3. 代码
-
 ```c++
 
 int C(int n, int k)
@@ -55,4 +53,21 @@ int C(int n, int k)
     return fact(n) * 1ll * fast_pow(fact(k), mod - 2) % mod * 1ll * fast_pow(fact(n - k), mod - 2) % mod;
 }
 
+```
+
+## 3. GCD
+
+GCD: greatest common divisor 最大公约数
+
+[例题 cf 1458A Row GCD](../分数段刷题计划/1600%20-%201600/1458A.cpp)
+
+basic properties of GCD: $GCD(x, y) = GCD(x − y, y)$
+
+multiple arguments: $GCD(x, y, z, …) = GCD(x − y, y, z, …)$
+
+
+## 4. 精度问题
+
+```c++
+cout << fixed << setprecision(17) << num1 << endl;
 ```
