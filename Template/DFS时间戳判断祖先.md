@@ -65,6 +65,7 @@ public:
         int clock = 0;
         vector<int> in(n), out(n);
         vector<int> nor(n, 0);
+        
         function<void(int, int)> dfs = [&](int u, int p)
         {
             in[u] = ++clock;
@@ -98,7 +99,7 @@ public:
             for (int j = 0; j < i; ++j) {
                 int x2 = edges[j][0], y2 = edges[j][1];
 
-                int x, y, z;
+                int x, y, z; 
                 
                 if (is_parent(y1, x2))
                 {
