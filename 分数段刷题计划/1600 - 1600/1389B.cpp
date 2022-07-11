@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+using i64 = long long;
+
+void slove()
+{
+    int n, k, z;
+    cin >> n >> k >> z;
+    vector<int> a(n);
+    for (int i = 0; i < n; ++i)
+    {
+        cin >> a[i];
+    }
+
+    // dp[i][j]: 一共行动 `i` 次, 其中 `j` 次向左, 能得到的最大分数
+    vector<vector<int>> dp(k + 1, vector<int>(z + 1, -1e9));
+
+    // 初始在原点, 自带分数
+    dp[0][0] = a[0];
+
+    // dp
+    for (int i = 0; i < k; ++i)
+    {
+        for (int j = 0; j <= z && 2 * j <= i; ++j)
+        {
+            // 往返 `j` 次, 消耗 `2 * j` 次行动, 剩下的都向右
+            dp[i + 1][j] = max(dp[i + 1][j], dp[i][j] + a[i - 2 * j + 1]);
+
+            // 再多往返一次
+            if (j < z && i + 2 <= k)
+            {
+                dp[i + 2][j + 1] = max(dp[i + 2][j + 1], dp[i][j] + a[i - 2 * j + 1] + a[i - 2 * j]);
+            }
+        }
+    }
+
+    int ans = 0;
+    for (int i = 0; i <= z; ++i)
+        ans = max(ans, dp[k][i]);
+
+    cout << ans << "\n";
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        slove();
+    }
+
+    return 0;
+}
