@@ -3,7 +3,35 @@
 using namespace std;
 
 void slove() {
-    
+    string s;
+    cin >> s;
+
+    int cnt = 0, ques = 0;
+    for (auto & c : s)
+    {
+        if (c == '(')
+        {
+            cnt += 1;
+        } else if (c == ')')
+        {
+            cnt -= 1;
+        } else {
+            ques += 1;
+        }
+
+        if (cnt + ques == 1)
+        {
+            cnt = 1;
+            ques = 0;
+        }
+    }
+
+    if (abs(cnt) == ques)
+    {
+        cout << "YES" << endl;
+    } else {
+        cout << "NO" << endl;
+    }
 }
 
 int main() {
