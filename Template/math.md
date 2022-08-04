@@ -65,7 +65,6 @@ basic properties of GCD: $GCD(x, y) = GCD(x − y, y)$
 
 multiple arguments: $GCD(x, y, z, …) = GCD(x − y, y, z, …)$
 
-
 ## 4. 精度问题
 
 ```c++
