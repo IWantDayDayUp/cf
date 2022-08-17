@@ -9,23 +9,26 @@ int main() {
     int n;
     cin >> n;
 
+    // dp[0][i]: a_i == 1
+    // dp[1][i]: a_i == b_i
     vector<int> b(n + 1);
+    vector<vector<int>> dp(2, vector<int>(n + 1, -1));
+
     for (int i = 1; i <= n; i++)
     {
         cin >> b[i];
+
+        if (i > 1)
+        {
+            dp[0][i] = max(1 - 1 + dp[0][i - 1], abs(1 - b[i - 1]) + dp[1][i - 1]);
+            dp[1][i] = max(abs(b[i] - 1) + dp[0][i - 1], abs(b[i - 1] - b[i]) + dp[1][i - 1]);
+        } else {
+            dp[0][i] = 0;
+            dp[1][i] = 0;
+        }
     }
 
-    long long ans = 0;
-
-    cout << ans << endl;
-
-    vector<int> a(n + 1);
-    for (int i = 1; i <= n; i++)
-    {
-
-    }
-
-    
+    cout << max(dp[0][n], dp[1][n]) << endl;
 
     return 0;
 }
