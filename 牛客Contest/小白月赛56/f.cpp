@@ -42,7 +42,7 @@ int main() {
     priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> q;
     q.emplace(make_pair(0, 1));
 
-    vector<long long> dis(n + 1, 1e9);
+    vector<long long> dis(n + 1, 1e18);
     dis[1] = 0;
 
     while (!q.empty())
