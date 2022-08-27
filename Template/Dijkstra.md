@@ -44,7 +44,7 @@
 
 ```c++
 int n = 1000, k = 3;
-vector<int> dis(n, -1);
+vector<int> dis(n, 1e9);
 // 自己到自己, 距离为0
 dis[k - 1] = 0;
 
