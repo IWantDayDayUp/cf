@@ -1,70 +1,43 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
-// C++ Version
-bool isPrime(int a) {
-    if (a < 2) return 0;
+const int N = 3 + 2e5;
 
-    for (int i = 2; i * i <= a; ++i)
-        if (a % i == 0) return 0;
+int n, q, a[N];
+bool p[N * 20];
+int pre[N];
+set<int> st;
 
-    return 1;
-}
+// 第2e5个质数 2750159
+// 至少要第2e5+1个质数
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-
-    int n, q;
     cin >> n >> q;
-
-    set<int> st;
-    for (int i = 1; i <= 1e9; i++)
-    {
-        if (isPrime(i))
-        {
-            st.insert(i);
-        }
-    }
-
-    vector<int> a(n);
-    set<int> st1;
-    vector<int> cnt(n, -1);
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 1; i <= n; ++i) {
         cin >> a[i];
+    }
 
-        if (isPrime(a[i]))
-        {
-            st1.insert(a[i]);
-        }
-
-        if (st1.size() == 0)
-        {
-            cnt[i] = *st.begin();
-        } else {
-            while (st1.count(*st.begin()))
-            {
-                st.erase(st.begin());
+    memset(p, true, sizeof(p));
+    p[1] = false;
+    for (int i = 2; i < N * 20; ++i) {
+        if (p[i]) {
+            for (int j = i + i; j < N * 20; j += i) {
+                p[j] = false;
             }
-
-            cnt[i] = *st.begin();
         }
     }
 
-    vector<int> ans(q);
-    for (int i = 0; i < q; i++)
-    {
+    int now = 1;
+    for (int i = 1; i <= n; ++i) {
+        if (a[i] < N * 20 && p[a[i]]) st.insert(a[i]);
+        while (!p[now] || st.count(now)) ++now;
+        pre[i] = now;
+    }
+
+    while (q--) {
         int x;
         cin >> x;
-
-        ans[i] = cnt[x - 1];
-    }
-
-    for (int i = 0; i < q; i++)
-    {
-        cout << ans[i] << endl;
+        cout << pre[x] << endl;
     }
 
     return 0;
