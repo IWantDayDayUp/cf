@@ -1,6 +1,48 @@
 # paper
 
+## 0. Abstract
+
+Virtual network embedding (VNE), working as a key step for network virtualization, has recently gained intensive attentions from the research community.
+
+In this paper, we propose a novel VNE algorithm that aims to maximize () from serving virtual network (VN) requests, with the help of the (GNT).
+
+The proposed algorithm, named as VNE-GNT, adopts a node-ranking approach that takes the GNT information into account in a recursive manner to assist the greedy node mapping, and **leverages** the shortest-path routing for link mapping.
+
+Our simulation results suggest that the proposed VNE-GNT algorithm outperforms three existing VNE algorithms, in the terms of () and ().
+
+Index Terms: Network Virtualization, Virtual Network Embedding(VNE), PageRank, Node Ranking, GNT
+
 ## 1. INTRODUCTION
+
+(背景, 网络环境现状, 虚拟化, )
+
+Recently, Internet has been growing exponentially with larger number of nodes and end-users, higher volume of traffic, and more varieties of applications.
+
+(提出问题, 并给出解决方法: 虚拟化)To this end, people rely on the network virtualization [4–6] to change how Internet is operated and to make it more elastic. Network virtualization helps to provision multiple virtual networks (VNs) over a substrate (or physical) network and enables seamlessly sharing of the computing and networking resources in the substrate network [4].
+
+(VNE问题, NP-hard)
+
+Typically, a VN consists of a set of virtual nodes (e.g., virtual routers) and a few virtual links that connect them.
+
+The best interest of the InPs is to achieve as much revenue as possible from serving the VN requests. Hence, they need to decide how to serve a VN request by allocating appropriate resources in the substrate network, i.e., virtual network embedding (VNE). Specifically, for each VN request, the InP needs to find a set of nodes and links in the substrate network, which have sufficient resources to carry the virtual nodes and virtual links. The VNE problem has been proven to be NP-hard [7], and previous researches have proposed several heuristic algorithms to address it [8–13].
+
+(别人的方法, 分类, 目前还存在的问题)
+
+Most of these algorithms performed node mapping based on the local resource information (i.e., the nodes’ resources or the nodes’ resources together with their incident links’ resources). However, this type of approach could easily result in unbalanced load distribution and congestion in the substrate network. Two recent works in [12, 13] took global resource information into consideration in the node mapping, while the algorithms only adopted over-simplified metrics to measure the embedding capacities of the nodes and did not fully explore the benefit of the global resource information.
+
+(怎么做的, 实验效果怎样)
+
+In this paper, we propose a novel VNE-GNT algorithm to help () with the assistance of the (GNT information).
+
+While serving the VN requests, the proposed VNE-GNT algorithm adopts a node rank, similar to the PageRank in web-search algorithm`14`, to rank nodes according to their (CPU bandwidth GNT resources).
+
+We then implement greedy node mapping based on the node ranks, and when node mapping is accomplished, link mapping is performed with the shortest-path routing algorithm.
+
+Simulation results show that the proposed VNE-GNT algorithm outperforms three existing VNE algorithms that also use the global resource information, in terms of acceptance and revenue.
+
+(文章结构)
+
+The rest of this paper is organized as follows. We formulate the VNE problem in Section 11. The details of the proposed VN-GNT algorithm are discussed in Section 11. Section 11 shows the simulation setup and results for the performance evaluation. Finally, Section 11 summarizes the paper.
 
 ## 2. VNE PROBLEM FORMULATION
 
@@ -24,9 +66,49 @@ Each VN request is also associated with two tie-domain parameters, i.e., $a$ for
 
 The notations are summarized in `Table 1`
 
-### B. VNE Process (映射过程以及约束条件 )
+### B. VNE Process (映射过程以及约束条件)
+
+The VNE process, as illustrated in `Fig. 1`, consists of three key steps, i.e., node ranking, node mapping and link mapping.
+
+- 1. node ranking:
+  
+ok
+
+- 2. node mapping:
+  
+The InP finds, for each virtual node from the VN request, q unique substrate node that has enough available computing resource to meet its computing resource demand, through a mapping, i.e., $F_N: N_v \rightarrow N_s$, such that, 
+
+$$F_N(n_v) = v_s$$
+
+under the following two constraints:
+
+For example, as shown in `Fig. 1`, the node mapping for the VN request is ${1 \rightarrow D, 2 \rightarrow C, ...}$.
+
+- 3. link mapping
+  
+For two adjacent nodes in the VN request, the InP finds one or more paths between the two mapped substrate nodes, and the total bandwidth of the path(s) should be larger than the corresponding virtual link bandwidth demand.
+
+Specifically, the mapping if $F_L: L_v \rightarrow L_s$, such that,
+
+$$F_L(l_v) = l_s$$
+
+under the following capacity constraints, i.e.,
+
+$$b_l \le B_L$$
+
+where $B_L$ is the total available bandwidth of path set $F_l$.
+
+For example, as shown in `Fig. 1`, the link mapping for the VN request is ${(1, 2) \rightarrow (D, C), ..., }$.
 
 ### C. VNE Revenue Model (评价指标)
+
+In this paper
+
+The revenue of the given VN request is defined as the summation of contributions from the computing resource demand and the bandwidth demand.
+
+$$R_v = \alpha \sum {cpu} + \beta \sum {bandwidth}$$
+
+where $\alpha$ and $beta$ are the unit price charged for computing resources and bandwidth resources, respectively.
 
 ## 3. VNE-GNT algorithm
 
