@@ -158,13 +158,44 @@ For the node mapping, we adopt a novel ranking approach, similar to the PageRank
 
 > Through this importance index formulate we are rangking the substrate nodes before mapping. The higher the importance index the higher will be the rank and that node is considered first for node mapping with the virtual node of arrival VNR.
 
+```markdown
+Stable Node Ranking approach
+
+Input: Network $G=(N, L)$, a small positive number $\delta$
+Output: Node Ranking Vector $R$ of the given Network $G$
+
+1. calculate matrix $M$ and initial vector $R_0(T_0)$
+2. Define the iteration number $k$, $k = 0$
+3. Define the variable number $w$, $w = 8$
+4. **while** $w \le \delta$ **do**:
+5.     $R_{k + 1} = (1 - d) * RB + d * M * R_k$;
+6.     w = ||R_{k + 1} - R_k||;
+7.     k = k + 1;
+8. **end while**
+9. $R = R_{k + 1}$
+
+
+<!-- 1. Given a positive value $\epsilon$, $i \leftarrow 0$
+2. **repeat**
+3. 　$NR^{i + 1} = NR^i$
+4.   $\delta \leftarrow ||NR^{i + 1} - NR^i||$
+5.   $i += 1$
+6. **until** $\delta \gt \epsilon$ -->
+```
+
 ### B. Node Mapping
 
-In the VNE-GNT algorithm, the node mapping works as follows in `a greedy way`.
+(总的说: 贪心策略, 然后再讲具体怎么贪心)
+
+In our proposed VNE-GNT algorithm, the node mapping of a given $VNR$ works as follows greedily(works in a greedy way).
 
 > The goal is to allocate the virtual nodes with more significant requirements to the substrate node with more significant resources. Then the process moves to the next stage of virtual link mapping, which is defined in the next subsection.
 
+(网络状态的读取, 备份)
+
 First, we backup the status of the substrate network, and then sorts the nodes of both the substrate network and the VN request in descending order according to the node-rank vectors calculated by `algorithm node rank`.
+
+(利用上一章节的算法, 计算节点重要性, 然后将底层网络和虚拟网络的节点进行排序, 倒序)
 
 As the value of the node rank indicates the embedding capacity of the corresponding node.
 
@@ -180,30 +211,37 @@ The details of the greedy node mapping algorithm are shown in `algorithm 2`.
 
 > The status of the whole network is backed-up on the arrival of $VNR_i$.
 
-```markdown
-
 Node Mapping Algorithm
 
 **Input**: Arrived Set of VNRs.
 **Output**: Node Mapping Result.
 
-**While** There is numapped virtual node $n_v$ in $VNR_i$ **do**:
-    <!-- 1. re-sort substrate nodes -->
-
-**end while**
-```
+1. Compute the NodeRank values of all nodes in both $G_s$ and $G_v$ using Algorithm 1 with a given value of $\epsilon$
+2. Sort the nodes in $G_s$ according to their NodeRank values in non-increasing order
+3. Sort the nodes in $G_v$ according to their NodeRank values in non-increasing order
+4. **for** each virtual node of the ${VNR}_i$ **do**:
+5. &emsp;Re-sort the nodes
+6. &emsp;Select the virtual node with the highest node-ranking value of the $VNR_i$ and map it to the substrate node with the highest node-rangking value of the SN, meeting the constraints of CPU demand.
+7. **end for**
+8. **if** the virtual node mapping of $VNR_i$ succeeds **then**
+9. &emsp; return node mapping result
+10. **else** reject the $VNR_i$ and throw the $VNR_i$ into the waiting queue
+11. **end if**
+12. **end while**
 
 The complexity of this algorithm is $O(|N_s||N_v|)$
 
 ### C. Shortest-Path-based Link Mapping
 
-For link mapping, Similar to previous works `[11, 12]`, we apply the shortest-path routing algorithm, which aims to minimize the total substrate bandwidth allocated to each virtual link.
+With all virtual nodes of the given VNR embedded successfully, the virtual links of the VNR will be embedded.
 
-Specifically, we embed the virtual links of the VN request one by one, and for each virtual link, we adopt the Dijkstra's algorithm to find the shortest path between the two corresponding nodes in the substrate network.
+For the link mapping stage, similar to previous works `[11, 12]`, we apply the shortest-path routing algorithm, which aims to minimize the total substrate bandwidth allocated to each virtual link.
 
-What's more, to improve the efficiency of the algorithm, we propose (), which pre-cuts all substrate links in the substrate network that do not have enough bandwidth for the corresponding virtual link.
+Specifically, we embed the virtual links of the VN request one by one, and for each virtual link, the Dijkstra's algorithm is adopted to find the shortest path between the two corresponding nodes in the substrate network.
 
-if any virtual link of the VN request mapping fails, we restore the status of the substrate network and mark the VN request as `blocked`.
+What's more(In addition), to improve the efficiency of the Dijkstra algorithm, we delete all substrate links in the substrate network that do not have enough bandwidth for the corresponding virtual link.
+
+If not all virtual links of the given VNR are embedded successfully, the status of the substrate network is restored and the VN request is `rejected`.
 
 `algorithm 3` describes the details of the shortest-path-based link mapping algorithm.
 
@@ -213,23 +251,25 @@ Link Mapping Algorithm
 
 **if** virtual node mapping of $VNR_i$ is succeded **then**:
     **for** each numapped virtual link $l$ in $VNR_i$ **do**:
-        <!-- 1. 删掉
-        2. Dijkstra -->
+        <!-- 1. 删掉 -->
+        delete all the substrate links in the substrate network that do not have enough bandwidth resource for the corresponding virtual link.
+
+        select the shortest path to map all virtual links, with fulfilling all link bandwidth demands of $VNR_i$
+        <!-- 2. Dijkstra -->
         **if** find a link **then**:
             Map the link $l$
         **else**:
-            Reject $VNR_i$
+            Reject the $VNR_i$ and throw the $VNR_i$ into the waiting queue
         **end if**
     **end for**
 **end for**
-
 ```
 
 The complexity of this algorithm is $O(|E_v||E_s|\log {|E_s|})$
 
 ### D. Our Proposed Algorithm
 
-$11111$
+> so, the proposed algorithm runs in polynomial time and can be simulated in a continuous time event(Section V).
 
 ### E. Time Complexity
 
