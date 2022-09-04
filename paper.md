@@ -62,6 +62,8 @@ We denote the available computing resource(e.g. CPU) of node $n_s \in N_s$, and 
 
 $P_l$ is the set of (acyclic paths) in $G_s$.
 
+$P_{mn}^s$ is the set of all loop-free paths between substrate nodes $m$ and $n$, $P_{mn}$ is one path selected from the $mn$ path set $P_{mn}^s$.
+
 An example of a substrate network is illustrated if (Fig.1 a), where the numbers around the nodes and links are their available resources.
 
 - Virtual network: We use notation $G_v$ to denote a virtual network(VN) request, whose topology can also be modeled as an undirected graph, where $N_v$ is the set of virtual nodes and $L_v$ is the set of virtual links.
@@ -72,9 +74,13 @@ Each virtual node $n_v \in N_v$ is associated with a computing resource demand o
 
 Each VN request is also associated with two tie-domain parameters, i.e., $a$ for the arrival time and $b$ for its lifetime.
 
+With adding the time attributes (arrival time, duration time and leaving time), a VN is extended to be a VNR.
+
 The notations are summarized in `Table 1`
 
 ### B. VNE Process (映射过程以及约束条件)
+
+Upon the arrival of a VNR, the substrate network has t o decide whether to accept the VNR or not. If the VNR is accepted, the substrate network must allocate the demanded network resources to embed the VNR. Allocated network resources are released upon the expiration of VNR.
 
 The VNE process, as illustrated in `Fig. 1`, consists of three key steps, i.e., node ranking, node mapping and link mapping.
 
@@ -83,18 +89,32 @@ The VNE process, as illustrated in `Fig. 1`, consists of three key steps, i.e., 
 ok
 
 - 2. node mapping:
+
+To each VNR, each virtual node must be assigned to a different substrate node of the SN.
   
 The InP finds, for each virtual node from the VN request, q unique substrate node that has enough available computing resource to meet its computing resource demand, through a mapping, i.e., $F_N: N_v \rightarrow N_s$, such that,
+
+The assignments of all virtual node in one VNR are determined by the nod-mapping function $F_n(): N^V \rightarrow N^S$
 
 $$F_N(n_v) = v_s$$
 
 under the following two constraints:
 
+where (1) aims to ensure that node capacity demand of virtual node $M$ must not exceed the available node capacity of the selected substrate node $F_N(M)$ that accommodates the virtual node $M$; (2) aims to ensure that the deviation relationship between the virtual node $M$ and the selected substrate node $F_N(M)4 must be within the required radius $LR(M)$ of virtual node $M$. Both two formulas must be fulfilled simultaneously in the node mapping stage.
+
 For example, as shown in `Fig. 1`, the node mapping for the VN request is ${1 \rightarrow D, 2 \rightarrow C, ...}$.
 
+As illustrated by `Fig. 2`, the node mapping result of virtual node of  $VNR_1$ if ${A -\rightarrow b, B \rightarrow a, C \rightarrow c}$.
+
 - 3. link mapping
-  
+
+Each virtual link of the same VNR is mapped onto a single substrate path in this paper between the corresponding substrate nodes that host two end virtual nodes.
+
 For two adjacent nodes in the VN request, the InP finds one or more paths between the two mapped substrate nodes, and the total bandwidth of the path(s) should be larger than the corresponding virtual link bandwidth demand.
+
+In this paper, path splitting(cao 27) cases are not considered.
+
+The link mapping is performed according to a link-mapping function $F_L(): L^N \rightarrow L^S$ for all virtual links(of the given VNR).
 
 Specifically, the mapping if $F_L: L_v \rightarrow L_s$, such that,
 
@@ -106,9 +126,15 @@ $$b_l \le B_L$$
 
 where $B_L$ is the total available bandwidth of path set $F_l$.
 
+During the VNR embedding, both the node mapping and the link mapping must be fulfilled. Otherwise, the VNR embedding fails and the given VNR is rejected.
+
 For example, as shown in `Fig. 1`, the link mapping for the VN request is ${(1, 2) \rightarrow (D, C), ..., }$.
 
+For better understanding of the VNR embedding, the embedding process of the VNR is depicted in `Fig. 3`.
+
 ### C. Performance Metrics (评价指标)
+
+After successfully mapping one VNR, it is essential to define proper metrics so as to evaluate the mapping algorithm.
 
 - VNR Acceptance Ratio: The long-term average acceptance ratio of arrival VNR(virtual network request) is given by following function:
 
@@ -150,13 +176,50 @@ In this section, we propose a novel VNE algorithm.
 
 The algorithm implements (a PageRank-like node-ranking) approach based on the (global resource information) and then performs node mapping according to the ranks of the nodes. After node mapping, the shortest-path-based link mapping follows.
 
-We refer this algorithm as GNT-driven VNE (VNE-GNT) algorithm, for it aims to maximize the InP's revenue by accepting as many as possible VN requests under the resource limitation of its substrate network.
+We refer this algorithm as GNT-Derived  VNE (VNE-GNT) algorithm, for it aims to from the famous Google PageRank website algorithm, we introduce hoe to get the stable node-ranking values of a given network in the following content.
+maximize the InP's revenue by accepting as many as possible VN requests under the resource limitation of its substrate network.
+
+(example 2)
+
+The proposed VNE-GNT algorithm is detailed in this section. Five important network topology attributes, adopted in VNE-GNT, are introduced and quantified at first. Then the novel node-ranking approach is presented, which consists of two subapproaches. Next, greedy node mapping is implemented based on the novel node-ranking approach. After completing the node mapping, the link mapping stage follows. In the last section, the time complexity of VNE-GNT is presented to prove that the VNE-GNT algorithm can conduct each given VNR embedding in polynomial time.
 
 ### A. Node Ranking
 
+Drawn from `19`, different topology attributes will have different critical effects on the embedding of each VNR. Each topology attribute enables to measure the relative importance of each node from the corresponding respect.
+
+Derived from the previous studies (e.g. 19 and 20), five fundamental and important topology attributes, adopted in our novel node-ranking approach.
+
+- Degree of a node $n$: Formula (10) defines the degree of node $n$ in a given network. It is determined by the function $totlink()$, counting the number of adjacent links of node $n$ in the network
+
+$$Degree(n) = totlink(n)$$
+
+- Strength of a node $n$: Formula (11) is the definition of the strength of node $n$ in the given network. It is determined by the function $totband()$, counting the sum of adjacent link bandwidth of node $n$ in the network
+
+$$Strength(n) = totband(n)$$
+
+The node-ranking approach is able to estimate the embedding ability of each substrate node.
+
+At first, a novel metric "Nov", quantifying topology attributes and global resources simultaneously, is defined. Global network resources considered in the novel node-ranking approach are node capacity and link bandwidth.
+
+Inspired by the *Coulomb's Law* in () area and the *Newton's Law* in () field, the interactions between any two discrete objects can be quantified. Therefore, formula (18) to quantify the interaction between any two nodes, $n$ and $m$, in the given network. Formula (18) is proposed to qualify the interaction between node $n$ and node $m$ in the node-ranking stage.
+
+$$nov = $$
+
+where $n$ is ...
+
+$$RB\% = benefiting$$
+
+where $RB\%$ is the normalized $RB$ of node $m$ in the network.
+
+Weight factors $\alpha$ and $\beta$ are used to balance the normalized resource block $RB$ and $Nov$ of node $m$.
+
+However, in extreme cases, such as sparse networks, *Direct node-ranking approach* is not able to calculate the importance of all nodes accurately, leading to inefficient resource utilization in the long term. Therefore, it is necessary to calculate stable $Nov$ of the given network, enabling to show the importance of all nodes accurately. Derived from the famous Google PageRank website algorithm, we introduce hoe to get the stable node-ranking values of a given network in the following content.
+
+(PageRank部分)
+
 For the node mapping, we adopt a novel ranking approach, similar to the PageRank algorithm.
 
-> Through this importance index formulate we are rangking the substrate nodes before mapping. The higher the importance index the higher will be the rank and that node is considered first for node mapping with the virtual node of arrival VNR.
+> Through this importance index formulate we are ranking the substrate nodes before mapping. The higher the importance index the higher will be the rank and that node is considered first for node mapping with the virtual node of arrival VNR.
 
 ```markdown
 Stable Node Ranking approach
@@ -183,6 +246,10 @@ Output: Node Ranking Vector $R$ of the given Network $G$
 6. **until** $\delta \gt \epsilon$ -->
 ```
 
+Backtracking and recursion methods cannot be applied to calculate (28), Therefore, an iterative approach can be adopted. Through $k$ iterations, it is easy to converge to the stable solution and get a final solution of (18). Therefore, corresponding complexity of the iteration-based node-ranking approach is $O(|N|^2\log{\frac{1}{\delta}})$, $\delta$ is a small positive number to ensure the number of iterations.
+
+The procedure of the stable node-ranking approach are detailed in `Algorithm 1`.
+
 ### B. Node Mapping
 
 (总的说: 贪心策略, 然后再讲具体怎么贪心)
@@ -195,11 +262,19 @@ In our proposed VNE-GNT algorithm, the node mapping of a given $VNR$ works as fo
 
 First, we backup the status of the substrate network, and then sorts the nodes of both the substrate network and the VN request in descending order according to the node-rank vectors calculated by `algorithm node rank`.
 
+> The status of the whole network is backed-up on the arrival of $VNR_i$.
+
 (利用上一章节的算法, 计算节点重要性, 然后将底层网络和虚拟网络的节点进行排序, 倒序)
 
-As the value of the node rank indicates the embedding capacity of the corresponding node.
+Then all nodes of the substrate network and the proposed $VN$ are sorted in the descending order, according to the node-ranking values calculated by the novel node-ranking approach in above section.
+
+As the value of the node-ranking indicates the embedding capacity of the corresponding node.
+
+(然后就是贪心映射的具体解释)
 
 Thus, the virtual node with the highest node rank among the remaining ones will always embed onto the substrate node that also has the highest node rank among the remaining substrate ones, whose available computing resource meets the demand.
+
+(如果不满足映射约束条件, 就拒绝该VNR)
 
 if the computing resource demand cannot be satisfied by any of the remaining substrate nodes, the VN request is marked as `blocked`(rejected), and if all virtual nodes ars embedded successfully, the computing resource of the corresponding substrate bodes would be updated.
 
@@ -207,9 +282,7 @@ if the computing resource demand cannot be satisfied by any of the remaining sub
 >
 > If every virtual node of the $VNR_i$ are mapped favorably, the CPU capacity of SN is further updated for the next VNR.
 
-The details of the greedy node mapping algorithm are shown in `algorithm 2`.
-
-> The status of the whole network is backed-up on the arrival of $VNR_i$.
+The details of the greedy node mapping algorithm are shown in `algorithm 2`(The greedy node mapping procedure is presented in Algorithm 2).
 
 Node Mapping Algorithm
 
@@ -221,7 +294,7 @@ Node Mapping Algorithm
 3. Sort the nodes in $G_v$ according to their NodeRank values in non-increasing order
 4. **for** each virtual node of the ${VNR}_i$ **do**:
 5. &emsp;Re-sort the nodes
-6. &emsp;Select the virtual node with the highest node-ranking value of the $VNR_i$ and map it to the substrate node with the highest node-rangking value of the SN, meeting the constraints of CPU demand.
+6. &emsp;Select the virtual node with the highest node-ranking value of the $VNR_i$ and map it to the substrate node with the highest node-ranking value of the SN, meeting the constraints of CPU demand.
 7. **end for**
 8. **if** the virtual node mapping of $VNR_i$ succeeds **then**
 9. &emsp; return node mapping result
