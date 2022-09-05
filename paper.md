@@ -4,15 +4,17 @@
 
 ## 0. Abstract
 
-Virtual network embedding (VNE), working as a key step for network virtualization, has recently gained intensive attentions from the research community.
+Virtual network embedding (VNE), working as a key step for network virtualization, can map various virtual networks(VNs) onto the shared substrate network efficiently and effectively. Previous VNE algorithms are mostly heuristic which assists the topology attributes and the locally available network resources to rank nodes, leading to a low acceptance rate and inefficient resource utilization in the long term. In addition, such methods focus on maximizing the possibility of the current virtual network being accepted, ignoring the synergy between different virtual networks, resulting in the dispersion of underlying network resources and the intensification of resource fragmentation.
 
-In this paper, we propose a novel VNE algorithm that aims to maximize () from serving virtual network (VN) requests, with the help of the (GNT).
+To deal with these issues, we propose a heuristic virtual network mapping method based on `generalized network temperature (GNT)`.
 
-The proposed algorithm, named as VNE-GNT, adopts a node-ranking approach that takes the GNT information into account in a recursive manner to assist the greedy node mapping, and **leverages** the shortest-path routing for link mapping.
+The proposed algorithm, named as VNE-GNT, adopts a node-ranking approach that takes the GNT information into account in a recursive manner to assist the greedy node mapping.The VNE-GNT algorithm can optimize the deployment location of the current virtual network and strengthen the collaboration between different virtual networks.
 
-Our simulation results suggest that the proposed VNE-GNT algorithm outperforms three existing VNE algorithms, in the terms of () and ().
+At the same time, the distance impact factor is adopted to improve the synergy between the node-mapping stage and the link-mapping stage, and the mapping cost is further reduced while meeting the constraints.
 
-Index Terms: Network Virtualization, Virtual Network Embedding(VNE), PageRank, Node Ranking, GNT
+Our simulation results suggest that the proposed VNE-GNT algorithm outperforms three existing VNE algorithms, in the terms of the acceptance rate of virtual network and the utilization of substrate network resources.
+
+Index Terms: Network Virtualization(NV), Virtual Network Embedding(VNE), PageRank, Node Ranking, Generalized Network Temperature(GNT)
 
 ---
 
@@ -22,31 +24,107 @@ Index Terms: Network Virtualization, Virtual Network Embedding(VNE), PageRank, N
 
 Recently, Internet has been growing exponentially with larger number of nodes and end-users, higher volume of traffic, and more varieties of applications.
 
-(提出问题, 并给出解决方法: 虚拟化)To this end, people rely on the network virtualization [4–6] to change how Internet is operated and to make it more elastic. Network virtualization helps to provision multiple virtual networks (VNs) over a substrate (or physical) network and enables seamlessly sharing of the computing and networking resources in the substrate network [4].
+With the development of the Internet, the number of network equipment, network traffic and end users has increased exponentially [22]. `Due to the huge system and complex structurethe of the traditional network architecture, it is difficult to meet the need of this explosive growth, but also difficult to expand and upgrade services, while the Internet rigidity problem [2] [3] is also becoming more and more serious, restricting the further development of the Internet.`
 
-(VNE问题, NP-hard)
+Network virtualization technology[4] allows multiple virtual networks to be deployed on the same underlying network without interfering with each other, and realizes the sharing of underlying network resources to maximize the utilization of network resources. Therefore, network virtualization technology is considered to be an effective solution to the problem of `Internet rigidity` and promote the further development of the Internet [18].
 
-Typically, a VN consists of a set of virtual nodes (e.g., virtual routers) and a few virtual links that connect them.
+In network virtualization technology, a virtual network is a logical topology consists of a series of virtual nodes and a few virtual links that connect the virtual nodes. The substrate network consists of many reusable physical nodes and physical links [5]. The process of mapping a virtual network, requested by an end user, to a shared substrate physical network is known as Virtual Network Mapping (VNE) [19].
 
-The best interest of the InPs is to achieve as much revenue as possible from serving the VN requests. Hence, they need to decide how to serve a VN request by allocating appropriate resources in the substrate network, i.e., virtual network embedding (VNE). Specifically, for each VN request, the InP needs to find a set of nodes and links in the substrate network, which have sufficient resources to carry the virtual nodes and virtual links. The VNE problem has been proven to be NP-hard [7], and previous researches have proposed several heuristic algorithms to address it [8–13].
+`Because of the conditional bundle of multiple dimensions, the solution of the traversal solution to the virtual network mapping problem has multiple dimensions of conditional constraints, which has been proved to be an NP-hard problem [1].`
+
+The VNE problem has been proven to be NP-hard [7], and previous researches have proposed several heuristic algorithms to address it [8–13].
+
+Therefore, the existing algorithms for solving virtual network mapping are roughly divided into three categories: precision solving, heuristics, and meta-heuristic algorithms [7].
+
+Because the heuristic algorithm can find virtual network mappings in polynomial time and has good performance, `it is a hot topic in current research.`
+
+The existing heuristic VNE mapping algorithm calculates the importance metric of the node from the topology information and uses it as an important basis for selecting the substrate node during the node mapping stage.
+
+It should be pointed out that the resource importance indicator must not only reflect the size of the node's own resources, but also reflect its importance in the network topology.
+
+In order to reduce the computational complexity of the traditional heuristic virtual network mapping algorithm, the virtual network mapping is usually solved in two stages: node mapping and link mapping.
+
+Among them, most of the node mapping adopts a greedy mapping strategy, that is, the network node is first sorted in importance, and the virtual node with more resource requirements is mapped to the underlying node with high importance as much as possible to meet the needs of the current virtual network request as much as possible.
+
+Most of the link mappings use the Dijkstra shortest path algorithm [12] to calculate the mapping scheme of virtual links, reducing the cost of the underlying link bandwidth.
+
+`The best interest of the InPs is to achieve as much revenue as possible from serving the VN requests. Hence, they need to decide how to serve a VN request by allocating appropriate resources in the substrate network, i.e., virtual network embedding (VNE). Specifically, for each VN request, the InP needs to find a set of nodes and links in the substrate network, which have sufficient resources to carry the virtual nodes and virtual links.`
+
+In summary, the existing virtual network mapping algorithms has the following problems:
+
+- The node importance evaluation is not comprehensive enough, resulting in a decrease in the acceptance rate of virtual network mappings.
+
+In the node-ranking stage, such algorithms only consider the static network topology and local network resources, ignore the impact of network load changes. Therefore, the evaluation of node importance is not comprehensive enough, `resulting in the importance of the selected nodes not matching the resources they have, leading to the low acceptance rate of virtual network.`
+
+- The acceptance rate of the virtual network is given priority, resulting in fragmentation of the substrate network resources and serious waste of resources.
+
+`In the node mapping stage, such algorithms only focus on maximizing the possibility of the current virtual network being accepted, do not optimize the deployment location of the virtual network according to the actual configuration and consumption of resources in the network, and lack of synergy between different virtual networks, resulting in the early use of key resources in the network, fragmentation of the underlying network resources is difficult to recycle, and the acceptance rate of subsequent virtual network requests is reduced.`
+
+- Node mapping and link mapping are separated from each other, resulting in the low acceptance rate of virtual network.
+
+`Completely separated two-stage mapping, lack of synergy between nodes and links, there will be adjacent virtual nodes mapped to two remote substrate nodes, resulting in increased virtual link mapping overhead, reducing the utilization of underlying network resources.`
 
 (别人的方法, 分类, 目前还存在的问题)
 
-Most of these algorithms performed node mapping based on the local resource information (i.e., the nodes’ resources or the nodes’ resources together with their incident links’ resources). However, this type of approach could easily result in unbalanced load distribution and congestion in the substrate network. Two recent works in [12, 13] took global resource information into consideration in the node mapping, while the algorithms only adopted over-simplified metrics to measure the embedding capacities of the nodes and did not fully explore the benefit of the global resource information.
+`Most of these algorithms performed node mapping based on the local resource information (i.e., the nodes’ resources or the nodes’ resources together with their incident links’ resources). However, this type of approach could easily result in unbalanced load distribution and congestion in the substrate network. Two recent works in [12, 13] took global resource information into consideration in the node mapping, while the algorithms only adopted over-simplified metrics to measure the embedding capacities of the nodes and did not fully explore the benefit of the global resource information.`
 
 (怎么做的, 实验效果怎样)
 
-In this paper, we propose a novel VNE-GNT algorithm to help () with the assistance of the (GNT information).
+Based on the Generalized Network Temperature(GNT) proposed by Wang et al. [14], this paper proposes a heuristic virtual network mapping algorithm based on the GNT, which better solves the above problems.
 
-While serving the VN requests, the proposed VNE-GNT algorithm adopts a node rank, similar to the PageRank in web-search algorithm`14`, to rank nodes according to their (CPU bandwidth GNT resources).
+`While serving the VN requests, the proposed VNE-GNT algorithm adopts a node rank, similar to the PageRank in web-search algorithm`14`, to rank nodes according to their (CPU bandwidth GNT resources).`
 
-We then implement greedy node mapping based on the node ranks, and when node mapping is accomplished, link mapping is performed with the shortest-path routing algorithm.
+`We then implement greedy node mapping based on the node ranks, and when node mapping is accomplished, link mapping is performed with the shortest-path routing algorithm.`
 
-Simulation results show that the proposed VNE-GNT algorithm outperforms three existing VNE algorithms that also use the global resource information, in terms of acceptance and revenue.
+`Simulation results show that the proposed VNE-GNT algorithm outperforms three existing VNE algorithms that also use the global resource information, in terms of acceptance and revenue.`
+
+(文章主要贡献)
+
+Overall, the main contributions of this paper are listed as follows.
+
+- A novel node-ranking approach is proposed by considering five network attributes and global network resources. The novel node-ranking approach, different from the previous node-ranking approaches, adopts the well-known PageRank method to calculate the node-ranking value in a stable state.
+
+Based on the concept of GNT, a novel node-ranking approach is proposed, which considers the available resources and traffic changes of the substrate network.
+
+`It can comprehensively evaluate the importance of nodes from multiple angles, and overcome the problem that and when mapping virtual networks, there will be problems where node CPU resources meet the constraints but link resources do not meet the constraints, or vice versa.`
+  
+- Based on the node-ranking approach of contribution 1, a heuristic virtual network mapping algorithm is further proposed. The proposed algorithm can not only meet the resource requirements of the given virtual network request, but also optimize the deployment location of the virtual network and improve the resource utilization of the entire substrate network.
+
+- The distance impact factor is adopted to optimize the greedy node mapping strategy and increase the collaboration between the node-mapping stage and link-mapping stage. 
+
+(两节点映射过于远m=, 造成带宽资源的浪费)
+
+`It can overcomes the problem that the traditional greedy strategy causes the current adjacent virtual nodes to be mapped to two distant underlying nodes, thereby unnecessary bandwidth consumption according to law.`
+
+`which reduces the link mapping cost as much as possible while meeting the node demand constraints, and`
+
+> Comprehensive simulation is implemented in our self-developed simulation platform in order to validate the advantage of VNE-GNT algorithm.
+>
+> Five typical and latest heuristic algorithms are selected for performance comparison.
 
 (文章结构)
 
 The rest of this paper is organized as follows. We formulate the VNE problem in Section 11. The details of the proposed VN-GNT algorithm are discussed in Section 11. Section 11 shows the simulation setup and results for the performance evaluation. Finally, Section 11 summarizes the paper.
+
+---
+
+## 2. Related work
+
+The literature [6, 7] proves that virtual network mapping (VNE) is an NP-hard problem. In the literature [7], the authors divide VNE algorithms into three categories according to the optimization strategies employed: precision solving, heuristics, and meta-heuristics. Precision solution algorithms and meta-heuristics can obtain the best or nearest optimal mapping result, but the time complexity of the algorithm is high and cannot be applied to large-scale network environments. The time complexity of the heuristic algorithm is relatively low, and a feasible mapping scheme can be found in polynomial time, which is suitable for larger networks.
+
+`However, VNE is an online problem and tries to embed proposed VNRs efficiently and dynamically in real networking. Therefore, we need to design a heuristic VNE algorithm, compromising the global optimality for a short execution time.`
+
+Yu et al. [8] proposed a heuristic mapping algorithm based on the node product value, which has become the most classic heuristic virtual network mapping algorithm used today. The core idea is to first sort all physical and virtual nodes, then use greedy strategies for node mapping, and finally use the Dijkstra method[13] and the Multi-Community Flow (MCF) method [13] to solve the virtual link mapping. When Yu et al. perform node sequencing, the sort value consists of two parts: the CPU resources of the node itself and the bandwidth of all the direct links of the node. The sort value represents the node's mapping ability in the local network, and the higher the sort value, the higher the likelihood that it will be selected by the virtual network mapping. The method is efficient because it is simple, but the method ignores the influence of nodes in the entire network, and the greediness of the algorithm leads to the premature waste of the underlying physical nodes with strong mapping ability, which leads to a sharp decrease in the success rate of the later virtual network mapping.
+
+Cheng et al. [9] proposed a heuristic virtual network mapping algorithm based on `topology awareness`. Unlike literature 8, when performing node ranking, Cheng et al. used the Markov Random Walk model to calculate the final stable sort value of the nodes iteratively. However, this method fails to effectively quantify global resources in the node ranking stage, resulting in the waste of substrate network resources.
+
+Feng et al. [10] proposed three different node-ranking methods based on new topology attributes, `but the essence is still to determine the importance value based on the computing resource of the nodes, the bandwidth of the direct link and the number of intermediate nodes of the physical path.` 
+
+In the literature [12], Zhang et al. used the modality attribute and clustering coefficient as the basis for node ranking, and the remaining steps were similar to `before`. However, in this method, the node degree attribute and the clustering coefficient information are still local topology attributes, and the global topology attributes are ignored. It will still prematurely exhaust the resources of the underlying nodes with strong mapping capabilities, resulting in a decrease in the success rate of virtual network mapping.
+
+Gong et al. [11] proposed a heuristic virtual network mapping algorithm that decides the order of the virtual network to be mapped based on the mapping revenue of the virtual networks and then uses a method similar to document [9] for node-ranking, after which the virtual node mappings are the same as the virtual link mappings [8].
+
+In summary, the node-ranking approach used by most heuristic virtual network mapping algorithms is still based on the static topology information of the network, ignoring the impact of network load changes on the node importance evaluation. With the arrival and departure of the virtual network request, the resource and load distribution of the substrate network are dynamically changing. Based solely on the static network topology and available network resource information, it is difficult to optimize the deployment location of the virtual network and prevent the fragmentation of the substrate network resources effectively.
 
 ---
 
