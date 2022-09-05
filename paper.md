@@ -4,7 +4,7 @@
 
 ## 0. Abstract
 
-Virtual network embedding (VNE), working as a key step for network virtualization, can map various virtual networks(VNs) onto the shared substrate network efficiently and effectively. Previous VNE algorithms are mostly heuristic which assists the topology attributes and the locally available network resources to rank nodes, leading to a low acceptance rate and inefficient resource utilization in the long term. In addition, such methods focus on maximizing the possibility of the current virtual network being accepted, ignoring the synergy between different virtual networks, resulting in the dispersion of underlying network resources and the intensification of resource fragmentation.
+Virtual network embedding (VNE), working as a key step for network virtualization, can map various virtual networks(VNs) onto the shared substrate network efficiently and effectively. Previous VNE algorithms are mostly heuristic which assists the topology attributes and the locally available network resources to rank nodes, leading to a low acceptance rate and inefficient resource utilization in the long term. In addition, such methods focus on maximizing the possibility of the current virtual network being accepted, ignoring the synergy between different virtual networks, resulting in the dispersion of substrate network resources and the intensification of resource fragmentation.
 
 To deal with these issues, we propose a heuristic virtual network mapping method based on `generalized network temperature (GNT)`.
 
@@ -26,7 +26,7 @@ Recently, Internet has been growing exponentially with larger number of nodes an
 
 With the development of the Internet, the number of network equipment, network traffic and end users has increased exponentially [22]. `Due to the huge system and complex structurethe of the traditional network architecture, it is difficult to meet the need of this explosive growth, but also difficult to expand and upgrade services, while the Internet rigidity problem [2] [3] is also becoming more and more serious, restricting the further development of the Internet.`
 
-Network virtualization technology[4] allows multiple virtual networks to be deployed on the same underlying network without interfering with each other, and realizes the sharing of underlying network resources to maximize the utilization of network resources. Therefore, network virtualization technology is considered to be an effective solution to the problem of `Internet rigidity` and promote the further development of the Internet [18].
+Network virtualization technology[4] allows multiple virtual networks to be deployed on the same substrate network without interfering with each other, and realizes the sharing of substrate network resources to maximize the utilization of network resources. Therefore, network virtualization technology is considered to be an effective solution to the problem of `Internet rigidity` and promote the further development of the Internet [18].
 
 In network virtualization technology, a virtual network is a logical topology consists of a series of virtual nodes and a few virtual links that connect the virtual nodes. The substrate network consists of many reusable physical nodes and physical links [5]. The process of mapping a virtual network, requested by an end user, to a shared substrate physical network is known as Virtual Network Mapping (VNE) [19].
 
@@ -44,9 +44,9 @@ It should be pointed out that the resource importance indicator must not only re
 
 In order to reduce the computational complexity of the traditional heuristic virtual network mapping algorithm, the virtual network mapping is usually solved in two stages: node mapping and link mapping.
 
-Among them, most of the node mapping adopts a greedy mapping strategy, that is, the network node is first sorted in importance, and the virtual node with more resource requirements is mapped to the underlying node with high importance as much as possible to meet the needs of the current virtual network request as much as possible.
+Among them, most of the node mapping adopts a greedy mapping strategy, that is, the network node is first sorted in importance, and the virtual node with more resource requirements is mapped to the substrate node with high importance as much as possible to meet the needs of the current virtual network request as much as possible.
 
-Most of the link mappings use the Dijkstra shortest path algorithm [12] to calculate the mapping scheme of virtual links, reducing the cost of the underlying link bandwidth.
+Most of the link mappings use the Dijkstra shortest path algorithm [12] to calculate the mapping scheme of virtual links, reducing the cost of the substrate link bandwidth.
 
 `The best interest of the InPs is to achieve as much revenue as possible from serving the VN requests. Hence, they need to decide how to serve a VN request by allocating appropriate resources in the substrate network, i.e., virtual network embedding (VNE). Specifically, for each VN request, the InP needs to find a set of nodes and links in the substrate network, which have sufficient resources to carry the virtual nodes and virtual links.`
 
@@ -58,11 +58,11 @@ In the node-ranking stage, such algorithms only consider the static network topo
 
 - The acceptance rate of the virtual network is given priority, resulting in fragmentation of the substrate network resources and serious waste of resources.
 
-`In the node mapping stage, such algorithms only focus on maximizing the possibility of the current virtual network being accepted, do not optimize the deployment location of the virtual network according to the actual configuration and consumption of resources in the network, and lack of synergy between different virtual networks, resulting in the early use of key resources in the network, fragmentation of the underlying network resources is difficult to recycle, and the acceptance rate of subsequent virtual network requests is reduced.`
+`In the node mapping stage, such algorithms only focus on maximizing the possibility of the current virtual network being accepted, do not optimize the deployment location of the virtual network according to the actual configuration and consumption of resources in the network, and lack of synergy between different virtual networks, resulting in the early use of key resources in the network, fragmentation of the substrate network resources is difficult to recycle, and the acceptance rate of subsequent virtual network requests is reduced.`
 
 - Node mapping and link mapping are separated from each other, resulting in the low acceptance rate of virtual network.
 
-`Completely separated two-stage mapping, lack of synergy between nodes and links, there will be adjacent virtual nodes mapped to two remote substrate nodes, resulting in increased virtual link mapping overhead, reducing the utilization of underlying network resources.`
+`Completely separated two-stage mapping, lack of synergy between nodes and links, there will be adjacent virtual nodes mapped to two remote substrate nodes, resulting in increased virtual link mapping overhead, reducing the utilization of substrate network resources.`
 
 (别人的方法, 分类, 目前还存在的问题)
 
@@ -88,13 +88,13 @@ Based on the concept of GNT, a novel node-ranking approach is proposed, which co
 
 `It can comprehensively evaluate the importance of nodes from multiple angles, and overcome the problem that and when mapping virtual networks, there will be problems where node CPU resources meet the constraints but link resources do not meet the constraints, or vice versa.`
   
-- Based on the node-ranking approach of contribution 1, a heuristic virtual network mapping algorithm is further proposed. The proposed algorithm can not only meet the resource requirements of the given virtual network request, but also optimize the deployment location of the virtual network and improve the resource utilization of the entire substrate network.
+- Based on the node-ranking approach of contribution 1, a heuristic virtual network mapping algorithm is further proposed. The proposed algorithm can not only meet the resource requirements of the given virtual network request but also optimize the deployment location of the virtual network and improve the resource utilization of the entire substrate network.
 
-- The distance impact factor is adopted to optimize the greedy node mapping strategy and increase the collaboration between the node-mapping stage and link-mapping stage. 
+- The distance impact factor is adopted to optimize the greedy node mapping strategy and increase the collaboration between the node-mapping stage and the link-mapping stage.
 
 (两节点映射过于远m=, 造成带宽资源的浪费)
 
-`It can overcomes the problem that the traditional greedy strategy causes the current adjacent virtual nodes to be mapped to two distant underlying nodes, thereby unnecessary bandwidth consumption according to law.`
+`It can overcomes the problem that the traditional greedy strategy causes the current adjacent virtual nodes to be mapped to two distant substrate nodes, thereby unnecessary bandwidth consumption according to law.`
 
 `which reduces the link mapping cost as much as possible while meeting the node demand constraints, and`
 
@@ -114,13 +114,13 @@ The literature [6, 7] proves that virtual network mapping (VNE) is an NP-hard pr
 
 `However, VNE is an online problem and tries to embed proposed VNRs efficiently and dynamically in real networking. Therefore, we need to design a heuristic VNE algorithm, compromising the global optimality for a short execution time.`
 
-Yu et al. [8] proposed a heuristic mapping algorithm based on the node product value, which has become the most classic heuristic virtual network mapping algorithm used today. The core idea is to first sort all physical and virtual nodes, then use greedy strategies for node mapping, and finally use the Dijkstra method[13] and the Multi-Community Flow (MCF) method [13] to solve the virtual link mapping. When Yu et al. perform node sequencing, the sort value consists of two parts: the CPU resources of the node itself and the bandwidth of all the direct links of the node. The sort value represents the node's mapping ability in the local network, and the higher the sort value, the higher the likelihood that it will be selected by the virtual network mapping. The method is efficient because it is simple, but the method ignores the influence of nodes in the entire network, and the greediness of the algorithm leads to the premature waste of the underlying physical nodes with strong mapping ability, which leads to a sharp decrease in the success rate of the later virtual network mapping.
+Yu et al. [8] proposed a heuristic mapping algorithm based on the node product value, which has become the most classic heuristic virtual network mapping algorithm used today. The core idea is to first sort all physical and virtual nodes, then use greedy strategies for node mapping, and finally use the Dijkstra method[13] and the Multi-Community Flow (MCF) method [13] to solve the virtual link mapping. When Yu et al. perform node sequencing, the sort value consists of two parts: the CPU resources of the node itself and the bandwidth of all the direct links of the node. The sort value represents the node's mapping ability in the local network, and the higher the sort value, the higher the likelihood that it will be selected by the virtual network mapping. The method is efficient because it is simple, but the method ignores the influence of nodes in the entire network, and the greediness of the algorithm leads to the premature waste of the substrate physical nodes with strong mapping ability, which leads to a sharp decrease in the success rate of the later virtual network mapping.
 
 Cheng et al. [9] proposed a heuristic virtual network mapping algorithm based on `topology awareness`. Unlike literature 8, when performing node ranking, Cheng et al. used the Markov Random Walk model to calculate the final stable sort value of the nodes iteratively. However, this method fails to effectively quantify global resources in the node ranking stage, resulting in the waste of substrate network resources.
 
-Feng et al. [10] proposed three different node-ranking methods based on new topology attributes, `but the essence is still to determine the importance value based on the computing resource of the nodes, the bandwidth of the direct link and the number of intermediate nodes of the physical path.` 
+Feng et al. [10] proposed three different node-ranking methods based on new topology attributes, `but the essence is still to determine the importance value based on the computing resource of the nodes, the bandwidth of the direct link and the number of intermediate nodes of the physical path.`
 
-In the literature [12], Zhang et al. used the modality attribute and clustering coefficient as the basis for node ranking, and the remaining steps were similar to `before`. However, in this method, the node degree attribute and the clustering coefficient information are still local topology attributes, and the global topology attributes are ignored. It will still prematurely exhaust the resources of the underlying nodes with strong mapping capabilities, resulting in a decrease in the success rate of virtual network mapping.
+In the literature [12], Zhang et al. used the modality attribute and clustering coefficient as the basis for node ranking, and the remaining steps were similar to `before`. However, in this method, the node degree attribute and the clustering coefficient information are still local topology attributes, and the global topology attributes are ignored. It will still prematurely exhaust the resources of the substrate nodes with strong mapping capabilities, resulting in a decrease in the success rate of virtual network mapping.
 
 Gong et al. [11] proposed a heuristic virtual network mapping algorithm that decides the order of the virtual network to be mapped based on the mapping revenue of the virtual networks and then uses a method similar to document [9] for node-ranking, after which the virtual node mappings are the same as the virtual link mappings [8].
 
@@ -134,17 +134,17 @@ This part of the paper gives a universal description of VNE, its procedures, alo
 
 ### A. VNE Models
 
-- Substrate network: We model the substrate network as an undirected graph, denoted as $G^s = (N_s, L_s,)$, where $N_s$ is the set of substrate nodes and $L_s$ is the set of substrate links.
+- Substrate network: We model the substrate network as an undirected graph, denoted as $G_v = (N_s, L_s, A_s^n, A_s^l, P_s)$, where $N_s$ is the set of substrate nodes and $L_s$ is the set of substrate links.
 
 We denote the available computing resource(e.g. CPU) of node $n_s \in N_s$, and available bandwidth of link $l_s \in L_s$, as $c_n$ and $b_l$, respectively.
 
-$P_l$ is the set of (acyclic paths) in $G_s$.
+$P_s$ is the set of all loop-free substrate paths in $G_s$.
 
 $P_{mn}^s$ is the set of all loop-free paths between substrate nodes $m$ and $n$, $P_{mn}$ is one path selected from the $mn$ path set $P_{mn}^s$.
 
 An example of a substrate network is illustrated if (Fig.1 a), where the numbers around the nodes and links are their available resources.
 
-- Virtual network: We use notation $G_v$ to denote a virtual network(VN) request, whose topology can also be modeled as an undirected graph, where $N_v$ is the set of virtual nodes and $L_v$ is the set of virtual links.
+- Virtual network: We use the notation $G_v$ to denote a virtual network(VN) request, whose topology can also be modeled as an undirected graph $G_v = (N_v, L_v, A_v^n, A_v^l, P_v)$, where $N_v$ is the set of virtual nodes and $L_v$ is the set of virtual links.
 
 Each virtual node $n_v \in N_v$ is associated with a computing resource demand of $c_v$ and each virtual link $l_v \in L_v$ has a bandwidth demand of $b_l$.
 
@@ -152,15 +152,17 @@ Each virtual node $n_v \in N_v$ is associated with a computing resource demand o
 
 Each VN request is also associated with two tie-domain parameters, i.e., $a$ for the arrival time and $b$ for its lifetime.
 
-With adding the time attributes (arrival time, duration time and leaving time), a VN is extended to be a VNR.
+To facilitate the understanding of the model definition of the substrate network and the virtual network, Figure 3.1 draws one substrate network and two virtual networks. It should be noted that to simplify the presentation of the model, the properties of the nodes and links are not marked.
 
-The notations are summarized in `Table 1`
+By adding the time attributes (arrival time, duration time and leaving time), a VN is extended to be a VNR.
+
+The notations used throughout this paper are summarized in `Table 1`.
 
 ### B. VNE Process (映射过程以及约束条件)
 
-Upon the arrival of a VNR, the substrate network has t o decide whether to accept the VNR or not. If the VNR is accepted, the substrate network must allocate the demanded network resources to embed the VNR. Allocated network resources are released upon the expiration of VNR.
+`Upon the arrival of a VNR, the substrate network has to decide whether to accept the VNR or not. If the VNR is accepted, the substrate network must allocate the demanded network resources to embed the VNR. Allocated network resources are released upon the expiration of VNR.`
 
-The VNE process, as illustrated in `Fig. 1`, consists of three key steps, i.e., node ranking, node mapping and link mapping.
+The VNE process, as illustrated in `Fig. 1`, consists of three key steps, i.e., node-ranking stage, node-mapping stage and link-mapping stage.
 
 - 1. node ranking:
   
@@ -168,118 +170,180 @@ ok
 
 - 2. node mapping:
 
-To each VNR, each virtual node must be assigned to a different substrate node of the SN.
-  
-The InP finds, for each virtual node from the VN request, q unique substrate node that has enough available computing resource to meet its computing resource demand, through a mapping, i.e., $F_N: N_v \rightarrow N_s$, such that,
+For each VN request, each virtual node must be assigned to a different substrate node that has enough available computing resources.
 
-The assignments of all virtual node in one VNR are determined by the nod-mapping function $F_n(): N^V \rightarrow N^S$
+The assignments of all virtual nodes in the given VNR are determined by the node-mapping function $F_n(): N^V \rightarrow N^S$
 
 $$F_N(n_v) = v_s$$
 
-under the following two constraints:
+under the following constraints:
 
-where (1) aims to ensure that node capacity demand of virtual node $M$ must not exceed the available node capacity of the selected substrate node $F_N(M)$ that accommodates the virtual node $M$; (2) aims to ensure that the deviation relationship between the virtual node $M$ and the selected substrate node $F_N(M)4 must be within the required radius $LR(M)$ of virtual node $M$. Both two formulas must be fulfilled simultaneously in the node mapping stage.
+$$cpu(n_v) \le cpu(n_s)$$
 
-For example, as shown in `Fig. 1`, the node mapping for the VN request is ${1 \rightarrow D, 2 \rightarrow C, ...}$.
+$$NodeMap(m_v) = NodeMap(n_v), iff m_v = n_v$$
+
+where (1) aims to ensure that the substrate node $n_s$ must have enough available computing resources to meet the resource demand of the virtual node $n_v$. (3.4) guarantees that different virtual nodes requested from the same virtual network are not mapped to the same substrate node. It is important to note that multiple virtual nodes from different virtual networks can share the same substrate node.
+
+> For example, as shown in `Fig. 1`, the node mapping for the VN request is ${1 \rightarrow D, 2 \rightarrow C, ...}$.
 
 As illustrated by `Fig. 2`, the node mapping result of virtual node of  $VNR_1$ if ${A -\rightarrow b, B \rightarrow a, C \rightarrow c}$.
 
 - 3. link mapping
 
-Each virtual link of the same VNR is mapped onto a single substrate path in this paper between the corresponding substrate nodes that host two end virtual nodes.
+After completing the node mapping, the link mapping stage follows.
 
-For two adjacent nodes in the VN request, the InP finds one or more paths between the two mapped substrate nodes, and the total bandwidth of the path(s) should be larger than the corresponding virtual link bandwidth demand.
+`Each virtual link of the same VNR is mapped onto a single substrate path between the corresponding substrate nodes that host two virtual nodes.`
 
 In this paper, path splitting(cao 27) cases are not considered.
 
-The link mapping is performed according to a link-mapping function $F_L(): L^N \rightarrow L^S$ for all virtual links(of the given VNR).
+`For two adjacent nodes in the VN request, the InP finds one or more paths between the two mapped substrate nodes, and the total bandwidth of the path(s) should be larger than the corresponding virtual link bandwidth demand.`
+
+The link mapping is performed according to a link-mapping function $F_L(): L^N \rightarrow L^S$ for all virtual links of the given VNR.
 
 Specifically, the mapping if $F_L: L_v \rightarrow L_s$, such that,
 
 $$F_L(l_v) = l_s$$
 
-under the following capacity constraints, i.e.,
+under the following capacity constraint, i.e.,
 
 $$b_l \le B_L$$
 
 where $B_L$ is the total available bandwidth of path set $F_l$.
 
-During the VNR embedding, both the node mapping and the link mapping must be fulfilled. Otherwise, the VNR embedding fails and the given VNR is rejected.
+During the VNR embedding, the node mapping and the link mapping must be fulfilled simultaneously. Otherwise, the VNR embedding fails and the given VNR is rejected.
 
-For example, as shown in `Fig. 1`, the link mapping for the VN request is ${(1, 2) \rightarrow (D, C), ..., }$.
+> For example, as shown in `Fig. 1`, the link mapping for the VN request is ${(1, 2) \rightarrow (D, C), ..., }$.
 
-For better understanding of the VNR embedding, the embedding process of the VNR is depicted in `Fig. 3`.
+`For better understanding of the VNR embedding, the embedding process of the VNR is depicted in Fig. 3.`
+
+If the virtual network is successfully mapped, it will occupy the allocated network resources for the duration of $T_d$, and the allocated network resources will be released upon the expiration of VNR for the mappings of the subsequent virtual network requests.
 
 ### C. Performance Metrics (评价指标)
 
-After successfully mapping one VNR, it is essential to define proper metrics so as to evaluate the mapping algorithm.
+When mapping virtual networks, it is essential to define proper metrics to evaluate the mapping algorithm.
 
-- VNR Acceptance Ratio: The long-term average acceptance ratio of arrival VNR(virtual network request) is given by following function:
+- VNR Acceptance Ratio: The long-term average acceptance ratio of VN requests is given by the following function:
 
-$$accept = \lim_{T \rightarrow \infty} {\frac{num_{success}}{num_{total}}}$$
+$$VNE_{accept} = \lim_{T \rightarrow \infty} {\frac{VNR_{accept}}{VNR_{total}}}$$
 
-where $num_{success}$ represents total number of accepted virtual network requests and $num_{total}$ corresponds to total number of arrival VNRs in the time window $T$.
+where $num_{success}$ represents the total number of accepted virtual network requests and $num_{total}$ corresponds to the total number of arrival VNRs in the time window $T$.
 
-- Long-Term Average Revenue: Long-term average revenue in the time $T$ is given by following function:
+- Long-Term Average Revenue: The long-term average revenue in the time $T$ is given by the following function:
 
-$$Rve = \lim_{T \rightarrow \infty} {\frac{\sum_{t=1}^{t=T}{Rev(t)}}{T}}$$
+$$Rev = \lim_{T \rightarrow \infty} {\frac{\sum_{t=1}^{t=T}{Rev(t)}}{T}}$$
 
-where $Rev(t)$ represents the revenue of accepting the VNRs at time $t$ which is defined as follows:
+where $Rev$ represents the revenue of accepting the VNRs at time $t$ which is defined as follows:
 
-$$Rev(t) = \alpha \sum_{n_v \ in N_v}{CPU(n_v)} + \beta \sum_{l_v \in L_v}{bandwidth(l_v)}$$
+$$Revenue(G_v) = \alpha \sum_{n_v \in N_v}{cpu(n_v)} + \beta \sum_{l_v \in L_v}{bandwidth(l_v)}$$
 
-where $CPU(n_v)$ represents CPU resource demand of a virtual node $n_v$, $bandwidth(l_v)$ represents bandwidth demand of virtual link $l_v$. $N_v$ represents the set of all virtual nodes and $L_v$ represents the set of all virtual links of the $VNR_i$.
+where $cpu(n_v)$ represents computing resource demand of a virtual node $n_v$, $bandwidth(l_v)$ represents bandwidth demand of a virtual link $l_v$. $N_v$ represents the set of all virtual nodes and $L_v$ represents the set of all virtual links of the $VNR_i$. Weight factors $\alpha$ and $\beta$ are used to balance different types of network resources.
 
-- Long-Term Average Revenue to Cost(R/C) Ratio: The long term average R/C ratio is given by:
+- Long-Term Average Cost: The long-term average cost in the time $T$ is given by the following function:
+
+$$Cost(G_v) = \gamma \sum_{n_v \in N_v}{CPU(n_v)} + \eta \sum_{l_v \in L_v}{\sum_{p \in P_s(l_v)}{hops(p) bandwidth(l_v)}}$$
+
+where parameters $\gamma$ and $\eta$ are the weighting parameters of node and link resources respectively, both are set to 1 in this paper.
+
+$P_s(l_v)$ is combined assigned pathset for virtual link $l_v$; $hops(p)$ for the path number p$p$ are the number of hops elapsed on the substrate network.
+
+- Long-Term Average Revenue to Cost(R/C) Ratio: The long-term average R/C ratio is given by:
 
 $$R/C = \frac{Rev(G_v)}{Cost(G_v)} = \frac{\lim_{T \rightarrow \infty}{\sum_{t=0}^{t=T}{Rev(G_v, t)}}}{\lim_{T \rightarrow \infty}{\sum_{t=0}^{t=T}{Cost(G_v, t)}}}$$
-
-where $Cost(G_v, t)$ is the accepting cost of $VNR_i$ at time frame $t$. $Cost(G_v, t)$ is defined as:
-
-$$Cost(G_v, t) = \alpha \sum_{n_v \in N_v}{CPU(n_v)} + \beta \sum_{l_v \in L_v}{\sum_{p \in P_s(l_v)}{hops(p) bandwidth(l_v)}}$$
-
-where parameters $\alpha$ and $\beta$ are the weighting parameters of node and link resources respectively, both are set to 1 in this paper. $P_s(l_v)$ is combined assigned pathset for virtual link $l_v$; $hops(p)$ for the path number p$p$ are the number of hops elapsed on the substrate network.
-
-The revenue of the given VN request is defined as the summation of contributions from the computing resource demand and the bandwidth demand.
-
-$$R_v = \alpha \sum {cpu} + \beta \sum {bandwidth}$$
-
-where $\alpha$ and $beta$ are the unit price charged for computing resources and bandwidth resources, respectively.
 
 ---
 
 ## 3. VNE-GNT algorithm
 
-In this section, we propose a novel VNE algorithm.
+The proposed VNE-GNT algorithm is detailed in this section.
 
-The algorithm implements (a PageRank-like node-ranking) approach based on the (global resource information) and then performs node mapping according to the ranks of the nodes. After node mapping, the shortest-path-based link mapping follows.
+The basic idea is that in the substrate network, the greater the change of the network load near the node, the higher the generalized network temperature, which also indicates that the node is busy and plays a more important role in the entire network.
 
-We refer this algorithm as GNT-Derived  VNE (VNE-GNT) algorithm, for it aims to from the famous Google PageRank website algorithm, we introduce hoe to get the stable node-ranking values of a given network in the following content.
-maximize the InP's revenue by accepting as many as possible VN requests under the resource limitation of its substrate network.
+Therefore, in addition to the topology attributes and the available resources of the network, the impact of GNT on the node ranking is also considered to make the node importance evaluation more accurate.
 
-(example 2)
+Next, greedy node mapping is implemented based on the node-ranking approach and distance factor is also adopted to further reduce the cost of mapping the given VNR.
 
-The proposed VNE-GNT algorithm is detailed in this section. Five important network topology attributes, adopted in VNE-GNT, are introduced and quantified at first. Then the novel node-ranking approach is presented, which consists of two subapproaches. Next, greedy node mapping is implemented based on the novel node-ranking approach. After completing the node mapping, the link mapping stage follows. In the last section, the time complexity of VNE-GNT is presented to prove that the VNE-GNT algorithm can conduct each given VNR embedding in polynomial time.
+After completing the node mapping, the link mapping stage follows. In the last section, the time complexity of VNE-GNT is presented to prove that the VNE-GNT algorithm can conduct each given VNR embedding in polynomial time.
 
 ### A. Node Ranking
 
-Drawn from `19`, different topology attributes will have different critical effects on the embedding of each VNR. Each topology attribute enables to measure the relative importance of each node from the corresponding respect.
+`The importance indicator of a node must not only reflect the size of the node's own resources, but also reflect the mapping ability of the node in the entire network.` When mapping a virtual network, nodes of different importance have different effects on the mapping results, and the more important the node is, the greater the impact on the mapping results.
 
-Derived from the previous studies (e.g. 19 and 20), five fundamental and important topology attributes, adopted in our novel node-ranking approach.
+Liao et al. [10] combined with various topological attributes such as degree centrality and proximity centrality of nodes, concluded that multiple topology attributes can improve the accuracy of node importance evaluation, thereby improving the acceptance rate and mapping revenue of virtual network requests in the long run. Therefore, this paper draws from [10] and evaluates the importance of nodes in combination with various attributes.
 
-- Degree of a node $n$: Formula (10) defines the degree of node $n$ in a given network. It is determined by the function $totlink()$, counting the number of adjacent links of node $n$ in the network
+- Degree of a node $n$: Formula (4.1) defines the degree of node $n$ in a given network.
 
-$$Degree(n) = totlink(n)$$
+$$Degree(i) = \sum_{j = 1}^{N}{a_{ij}}$$
 
-- Strength of a node $n$: Formula (11) is the definition of the strength of node $n$ in the given network. It is determined by the function $totband()$, counting the sum of adjacent link bandwidth of node $n$ in the network
+where $N$ represents the number of nodes in a given network. $a_{ij} = 1$ indicates that there is a direct link between the nodes $i$ and $j$, $a_{ij} = 0$ vice versa. The degree of a node indicates the connectivity of the node in the entire network. The greater the degree of a node, the greater the impact on the virtual network mapping results.
 
-$$Strength(n) = totband(n)$$
+- Strength of a node $n$: Formula (4.2) is the definition of the strength of node $n$ in the given network.
 
-The node-ranking approach is able to estimate the embedding ability of each substrate node.
+$$NodeResource[i] = cpu[i]*\sum_{j = 1}^{N}{bandwidth(ij)}$$
 
-At first, a novel metric "Nov", quantifying topology attributes and global resources simultaneously, is defined. Global network resources considered in the novel node-ranking approach are node capacity and link bandwidth.
+Nodes and links in the network that are rich in resource or have a greater impact on network connectivity are key resources. The traditional heuristic mapping algorithms use the greedy strategy for node mapping, giving priority to the use of key resources for the mapping of the current virtual network, and maximizing the possibility of the current virtual network being accepted. This strategy leads to over-consumption of critical resources in the substrate network, exacerbating the degree of resource fragmentation, thereby reducing the acceptance rate of subsequent virtual network requests.
 
-Inspired by the *Coulomb's Law* in () area and the *Newton's Law* in () field, the interactions between any two discrete objects can be quantified. Therefore, formula (18) to quantify the interaction between any two nodes, $n$ and $m$, in the given network. Formula (18) is proposed to qualify the interaction between node $n$ and node $m$ in the node-ranking stage.
+Therefore, when mapping virtual networks, it is necessary not only to meet the needs of the current virtual network, but also to optimize the deployment location of the virtual network and strengthen the collaboration between different virtual networks in order to map more virtual networks and improve the resource utilization of the substrate network.
+
+At the same time, the importance of network nodes is not only related to the topology of the network or its own network resources, but also to the current network load situation, and the importance of nodes changes with the change of network load [20]. However, traditional heuristic virtual network mapping algorithms are mostly based on static analysis methods based on topology awareness when it comes to node ranking. In the case of changing network status, these methods generally fail to comprehensively and accurately measure the importance of network nodes, resulting in a decrease in the acceptance rate of virtual network mapping and the utilization of network resources.
+
+In summary, in order to evaluate the importance of nodes more comprehensively and strengthen the collaboration between different virtual network requests, this paper takes into account the changes in network load when ranking the network nodes. Then optimize the deployment location of the current virtual network and reserve resources for mapping more subsequent virtual network requests.
+
+To represent the load of a network, we introduce the network traffic matrix. It is the global view of the substrate network traffic, which can obtain the operating state of the network from a more macroscopic perspective [16].
+
+Network Traffic Matrix: A matrix consisting of all OD (Origin-Destination) traffic in the current network, where the OD stream $(v_1, v_2)$ is defined as a collection of all traffic entering from the node $v_1$ (source node) and finally flowing out of the node $v_2$ (target node).
+
+The network traffic matrix of a network with $n$ network nodes is represented in $T$, containing $n × n$ elements.
+
+$$sthsdthdsthdshts$$
+
+where the rows represent the source nodes, the columns represent the destination nodes. The sum of the elements of the $i$ row of the matrix represents the total traffic flowing out of the source node $v_i$, and the sum of the elements of column $j$ of the matrix represents the total traffic flowing into the destination node $v_j$.
+
+According to the definition of network entropy and network traffic matrix, all OD streams gathered near a source node can be regarded as basic states, `which meet the conditions of the network entropy probability mentioned above`. The probability of the state is defined as:
+
+$$p_i = \frac{t_{ij}}{\sum_{j = 1}^{j = n}{t_{ij}}}$$
+
+where $\sum_{j = 1}^{j = n}{t_{ij}}$ represents the total traffic flowing out of the source node $v_i$.
+
+According to the definition of the three types of network entropy, the network entropy of Shannon, Rényi, and Tsallis near the source node is calculated as follows:
+
+$$H_i = -\sum_{i = 1}^{n}{p_i \log{p_i}}$$
+$$R_i = \frac{1}{1 - \alpha} \ln_{i = 1}^{n}{p_i^{\alpha}}$$
+$$S_i = \frac{1}{\alpha - 1} (1 - \sum_{i = 1}^{n}{p_i^{\alpha}})$$
+
+The GNT of the node can be further obtained as follows:
+
+$$GNT_H = \frac{\Delta T}{\Delta H}$$
+$$GNT_R = \frac{\Delta T}{\Delta R}$$
+$$GNT_S = \frac{\Delta T}{\Delta S}$$
+
+where $\Delta T$ represents the increment of the change in network traffic over the duration of $\Delta t$, which can be positive or negative. $\Delta H$, $\Delta S$ and $\Delta S$ represents the changes in the entropy Shannon, the entropy of Rényi and the entropy of Tsallis of the network in $\Delta$, respectively.
+
+Formally, the generalized network temperature is the derivative of network traffic relative to network entropy, and its physical significance is the rate of change of network entropy with network traffic.
+
+Therefore, the faster the network traffic near the node changes, the faster the network entropy changes, and the greater the GNT near the node.
+
+With the help of GNT, we can quickly find the substrate nodes with obvious load changes or have a greater impact on network communication under the current network condition, then avoid mapping virtual nodes onto such nodes, thereby optimizing the deployment location of the current virtual network request and preventing the key resources of the substrate network from being overused.
+
+$$zdfvlkbzdnsjlfvbjnzlbfjnv$$
+
+The topology awareness is adopted to distinguish the differences in the importance of resources in the substrate network, while GNT is to provide certain protection for important resources and avoid them from being overused.
+
+The importance value for a node used in this paper is defined as follows:
+
+$$R[i] = \frac{Degree[i] \ast NodeResource[i]}{GNT[i]}$$
+
+where the node degree attribute and the resource strength of the node are positively correlated with the mapping ability of the node, that is, the larger the molecule, the greater the mapping ability of the node; The GNT attribute of the node is negatively correlated with the node importance, so as to avoid the excessive occupation of key resources in the current network state.
+
+Different from the traditional importance-based virtual network mapping algorithms, the method in this paper use the generalized network temperature in the virtual network mapping process to adopt a more reasonable resource mapping strategy and strengthen the collaborative processing between different virtual network requests.
+
+Therefore, when mapping virtual networks, it is more inclined to select nodes with relatively low GNT and relatively rich resources in the generalized network to map, so as to optimize the deployment location of the virtual network, which not only meets the needs of the current virtual network, but also protects important resources to accept more subsequent virtual network mapping requests and improve the resource utilization of the underlying network.
+
+<!-- 
+> The node-ranking approach is able to estimate the embedding ability of each substrate node.
+>
+> At first, a novel metric "Nov", quantifying topology attributes and global resources simultaneously, is defined. Global network resources considered in the novel node-ranking approach are node capacity and link bandwidth.
+>
+> Inspired by the *Coulomb's Law* in () area and the *Newton's Law* in () field, the interactions between any two discrete objects can be quantified. Therefore, formula (18) to quantify the interaction between any two nodes, $n$ and $m$, in the given network. Formula (18) is proposed to qualify the interaction between node $n$ and node $m$ in the node-ranking stage.
 
 $$nov = $$
 
@@ -289,13 +353,33 @@ $$RB\% = benefiting$$
 
 where $RB\%$ is the normalized $RB$ of node $m$ in the network.
 
-Weight factors $\alpha$ and $\beta$ are used to balance the normalized resource block $RB$ and $Nov$ of node $m$.
-
-However, in extreme cases, such as sparse networks, *Direct node-ranking approach* is not able to calculate the importance of all nodes accurately, leading to inefficient resource utilization in the long term. Therefore, it is necessary to calculate stable $Nov$ of the given network, enabling to show the importance of all nodes accurately. Derived from the famous Google PageRank website algorithm, we introduce hoe to get the stable node-ranking values of a given network in the following content.
+Weight factors $\alpha$ and $\beta$ are used to balance the normalized resource block $RB$ and $Nov$ of node $m$. -->
 
 (PageRank部分)
 
 For the node mapping, we adopt a novel ranking approach, similar to the PageRank algorithm.
+
+It is worth noting that equation (4.10) represents the mapping capabilities of the substrate node itself. But the importance of a node is related not only to the amount of resources of the node itself, but also to the importance of neighboring nodes [9]. In addition, in extreme cases such as sparse networks, the direct node ranking method shown in equation (4.10) can not evaluate the importance of all nodes accurately[10], which affects the virtual network node mapping process, resulting in low resource utilization and low virtual network acceptance rate in the long term.
+
+In order to calculate the stable importance of all the nodes in the entire network accurately, `on the basis of equation (4.10), using the method of calculating the node importance based on the Markov random walk model proposed in the literature [9], the node importance value is iteratively calculated to convergence, and then normalized to obtain the final stable ranking value of the node, and the specific calculation steps are as follows:`
+
+- Sets the initial importance value of the node $NR^0$ based on equation (4.10).
+
+$$NR^0 = \frac{R(n)}{\sum_{u \in N_s}{R(u)}}$$
+
+- The Markov random walk model is then used to iterate on the initial substrate network
+
+$$NR^(i + 1) = X \eta NR^i$$
+
+where $X$ is the Markov one-step transfer matrix defined in [9].
+
+- Finally, using normalization to obtain the final importance value NR(n) of node $n$
+
+$$Rank(n) = \frac{NR(n)}{\sum_{i = 1}^{N}{NR(n_i)}}$$
+
+where $N$ is the number of substrate nodes in the SN.
+
+`However, in extreme cases, such as sparse networks, *Direct node-ranking approach* is not able to calculate the importance of all nodes accurately, leading to inefficient resource utilization in the long term. Therefore, it is necessary to calculate stable $Nov$ of the given network, enabling to show the importance of all nodes accurately. Derived from the famous Google PageRank website algorithm, we introduce how to get the stable node-ranking values of a given network in the following content.`
 
 > Through this importance index formulate we are ranking the substrate nodes before mapping. The higher the importance index the higher will be the rank and that node is considered first for node mapping with the virtual node of arrival VNR.
 
@@ -324,11 +408,25 @@ Output: Node Ranking Vector $R$ of the given Network $G$
 6. **until** $\delta \gt \epsilon$ -->
 ```
 
-Backtracking and recursion methods cannot be applied to calculate (28), Therefore, an iterative approach can be adopted. Through $k$ iterations, it is easy to converge to the stable solution and get a final solution of (18). Therefore, corresponding complexity of the iteration-based node-ranking approach is $O(|N|^2\log{\frac{1}{\delta}})$, $\delta$ is a small positive number to ensure the number of iterations.
+`Backtracking and recursion methods cannot be applied to calculate (28), Therefore, an iterative approach can be adopted. Through $k$ iterations, it is easy to converge to the stable solution and get a final solution of (18). Therefore, corresponding complexity of the iteration-based node-ranking approach is $O(|N|^2\log{\frac{1}{\delta}})$, $\delta$ is a small positive number to ensure the number of iterations.`
 
 The procedure of the stable node-ranking approach are detailed in `Algorithm 1`.
 
 ### B. Node Mapping
+
+Virtual node mapping can be divided into one-stage mapping method and two-stage mapping method according to different mapping relationships. Among them, the one-stage mapping method is completed alternately between node and link mapping; The two-stage mapping method is to map all virtual nodes after the link mapping is completed.
+
+The proposed approach belongs to the two-stage heuristic mapping algorithm, but in order to strengthen the synergy between the two stages of virtual node mapping and virtual link mapping, and reduce the cost of virtual link mapping effectively, the node mapping is optimized by using a greedy strategy. Specifically, the defined distance impact factor is as follows:
+
+$$DisFactor(n) = \frac{\sum_{v \in nei(n)}{distance(n, v)}}{|nei(n)|}$$
+
+where $distance(n, v)$ represents the shortest distance between node $n$ and $v$ calculated by the Dijkstra algorithm. $nei(n)$ is the set of substrate nodes, consisting of the substrate nodes corresponding to the virtual nodes of the neighbor of the current virtual node $n$.
+
+As shown in `Figure 4.1`, suppose that virtual nodes $A$ and $B$ have been mapped to the substrate nodes $b$ and $a$, and virtual node $C$ is the virtual node that currently needs to be mapped. For virtual node $C$, if the traditional greedy mapping strategy is still adopted, it may be mapped to the substrate node $i$ according to the `node ranking result calculated above`. However, at this time, the substrate node $i$ is far away from the substrate nodes $a$ and $b$, and more bandwidth resources need to be spent in the subsequent virtual link mapping stage, resulting in the waste of resources.
+
+If the distance factor is introduced to reorder the substrate nodes, the ranking of the nodes that near from the substrate nodes $a$ and $b$ may increase, and if it is mapped to the substrate node $e$, it can not only meet the needs of the virtual node, but also reduce the consumption of bandwidth resources in the virtual link mapping stage.
+
+`For the virtual network mapping revenue-cost ratio $Revenue/Cost(G_v)$ (3.10), we can adjust the cost-to-cost ratio of the virtual network mapping through the distance impact factor. The specific analysis is as follows: for a given virtual network mapping request, the mapping benefit is fixed (e.g., equation (3.8)), so the impact of the revenue-expenditure ratio is the expenditure required to complete the mapping scheme, such as equation (3.9), which is positively related to the length of the path mapped by the virtual link in the underlying network. In general, the closer the distance between the two underlying nodes, the smaller the shortest path length of the corresponding physical link, then the virtual link mapping cost is smaller when the virtual link is mapped, so that the important resources of the underlying network can be protected, leaving more resources for the mapping of subsequent virtual network requests, and improving the resource utilization of the underlying network.`
 
 (总的说: 贪心策略, 然后再讲具体怎么贪心)
 
