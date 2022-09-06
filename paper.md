@@ -250,6 +250,53 @@ $P_s(l_v)$ is combined assigned pathset for virtual link $l_v$; $hops(p)$ for th
 
 $$R/C = \frac{Rev(G_v)}{Cost(G_v)} = \frac{\lim_{T \rightarrow \infty}{\sum_{t=0}^{t=T}{Rev(G_v, t)}}}{\lim_{T \rightarrow \infty}{\sum_{t=0}^{t=T}{Cost(G_v, t)}}}$$
 
+### C. Network Entropy
+
+- Shannon Entropy
+Shannon extends the concept of entropy in statistical physics to the process of channel communication and defines it as information entropy (also known as Shannon entropy). Specifically, for a random variable $x$, the Shannon entropy is defined as:
+
+$$H(x) = -\sum_{x \in X} {p_i \log_{b} {p_i}}$$
+
+where $p_i$ represents the probability of the occurrence of the variable $i$; $X = {p_1, p_2, ..., p_n}$ represents the set of occurrence probabilities for all examples. The base number $b$ corresponds to the scale of Shannon entropy.
+
+`the scale of b = 2 is bit (bit), b = e (natural logarithmic base) is nat (nat), in this paper, if there is no special description, the base will be omitted in the subsequent discussion, and b = e (that is, the dimension is nat) will be uniformly taken, and represented by ln.`
+
+Properties of Shannon entropy: 1) Continuity: The variable Shannon entropy changes continuously with probability; 2) Monotonicity: The Shannon entropy of the variable increases monotonically with the increase of the value of the variable; 3) Adductability: Information from different sources can be superimposed, as follows:
+
+$$H(p_1, p_2, ..., p_n) = H(p_1) + H(p_2) + ... + H(p_n)$$
+
+In the literature [14], the authors use Shannon entropy as the network entropy of GNT, but in some specific scenarios, Shannon entropy is slightly less effective than other types of entropy, to better improve the universality of the algorithm, this article will introduce more types of network entropy.
+
+- Rényi Entropy
+
+Rényi entropy is obtained by Shannon entropy by relaxing the additive conditions, as defined below:
+
+$$R(x) = \frac{1}{1 - \alpha} \ln {\sum {p_i^{\aplha}}}$$
+
+Compared to Shannon entropy, Rényi entropy introduces adjustable parameter α, making the measurement of information more general and flexible. At α>1, certain high-probability events have a greater effect on Rényi entropy than Shannon entropy. In particular, when α→ 1, Rényi entropy degenerates into Shannon entropy, i.e. R(X) →H(X).
+
+- Tsallis Entropy
+
+The definition of Tsallis entropy is as follows:
+
+$$S(x) = \frac{1}{\alpha - 1} (1 - \sum_{i}{p_i^{\alpha}})$$
+
+Among them, consistent with Rényi entropy, α is an adjustable parameter. When α>1, the smaller the p-value, the closer the value of p^α to 0, the distribution of high-probability events is more obvious than that of low-probability events, so Tsallis entropy mainly reflects the distribution state of high-probability events when α>1; On the contrary, when α<0, it mainly reflects the distribution state of low-probability events.
+
+In summary, Shannon entropy is more extensive and universal, while Rényi entropy and Tsallis entropy are further generalized by introducing adjustable parameter α to further promote Shannon entropy, focusing on measuring information.
+
+- GNT
+
+Generalized Network Temperature (GNT) is a new statistical metric proposed by Wang[14] et al. for the portrayal of the network data transmission environment, which takes into account the changes in network topology in the time scale and the changes in network traffic distribution in the space scale, and has typical spatiotemporal fusion characteristics. This indicator has a wide range of applications in many fields such as network anomaly detection[15] and network security posture assessment.
+
+The definition of generalized network temperature GNT is analogous to thermodynamic temperature, in which temperature $T$ is defined as the amount of heat introduced or lost in an insulation system $dQ$ and the resulting change in thermodynamic entropy dS micro-quotient. In the literature [14], taking into account the relationship between thermodynamic entropy and information entropy, the author proposes that if the thermotropic entropy is replaced by the Shannon entropy of the network and the "amount of heat introduced or lost" in the thermodynamics is replaced by the "change in the number of packets transmitted" in the network, a new metric will eventually be obtained, namely the generalized network temperature GNT, which is defined as follows:
+
+$$GNT = \frac{\Delta P}{\Delta H}$$
+
+where $\Delta P$ represents a change in the number of packets transmitted in the network, while $\Delta H$ represents a change in Shannon entropy caused by a change in the number of packets.
+
+Because GNT is derived from thermodynamic temperature analogy, it has similar properties to thermodynamic temperature and can be used to measure how busy data transmission near nodes is. In general, the higher the GNT value of an area in the network, the greater the network load in that region[20]
+
 ---
 
 ## 3. VNE-GNT algorithm
@@ -426,7 +473,13 @@ As shown in `Figure 4.1`, suppose that virtual nodes $A$ and $B$ have been mappe
 
 If the distance factor is introduced to reorder the substrate nodes, the ranking of the nodes that near from the substrate nodes $a$ and $b$ may increase, and if it is mapped to the substrate node $e$, it can not only meet the needs of the virtual node, but also reduce the consumption of bandwidth resources in the virtual link mapping stage.
 
-`For the virtual network mapping revenue-cost ratio $Revenue/Cost(G_v)$ (3.10), we can adjust the cost-to-cost ratio of the virtual network mapping through the distance impact factor. The specific analysis is as follows: for a given virtual network mapping request, the mapping benefit is fixed (e.g., equation (3.8)), so the impact of the revenue-expenditure ratio is the expenditure required to complete the mapping scheme, such as equation (3.9), which is positively related to the length of the path mapped by the virtual link in the underlying network. In general, the closer the distance between the two underlying nodes, the smaller the shortest path length of the corresponding physical link, then the virtual link mapping cost is smaller when the virtual link is mapped, so that the important resources of the underlying network can be protected, leaving more resources for the mapping of subsequent virtual network requests, and improving the resource utilization of the underlying network.`
+For the virtual network mapping revenue-cost ratio $Revenue/Cost(G_v)$ (3.10), we can adjust the revenue-to-cost ratio of the virtual network mapping through the distance impact factor. The specific analysis is as follows: for a given virtual network mapping request, the mapping revenue is fixed (e.g., equation (3.8)), so the impact of the revenue-expenditure ratio is the expenditure required to complete the mapping, (e.g., equation (3.9)), which is positively related to the length of the path mapped by the virtual link in the substrate network. In general, the closer the distance between the two substrate nodes, the smaller the shortest path length of the corresponding physical link, then the virtual link mapping cost is smaller when the virtual link is mapped so that the important resources of the substrate network can be protected, leaving more resources for the mapping of subsequent virtual network requests, and improving the resource utilization of the substrate network.
+
+The specific process of optimizing node mapping proposed in this article is as follows:
+
+- For the virtual node $n$ currently to be mapped, add the distance factor to the formula (4.13) to re-rank the substrate nodes.
+
+Node mapping is considered successful if and only if all virtual nodes requested by the virtual network are successfully mapped, otherwise, if any one of the virtual nodes is not successfully mapped, the virtual network is rejected.
 
 (总的说: 贪心策略, 然后再讲具体怎么贪心)
 
@@ -488,7 +541,13 @@ For the link mapping stage, similar to previous works `[11, 12]`, we apply the s
 
 Specifically, we embed the virtual links of the VN request one by one, and for each virtual link, the Dijkstra's algorithm is adopted to find the shortest path between the two corresponding nodes in the substrate network.
 
-What's more(In addition), to improve the efficiency of the Dijkstra algorithm, we delete all substrate links in the substrate network that do not have enough bandwidth for the corresponding virtual link.
+However, the large number of substrate links will lead to a significant increase in the computational complexity of the Dijkstra algorithm.
+
+So to improve the efficiency of the Dijkstra algorithm, before calculating the link mapping scheme, the substrate network needs to be preprocessed.
+
+When the link is mapped, a possible solution path calculated by the Dijkstra shortest path algorithm is connected by several segments of the substrate link and each substrate link itself bandwidth resources must be greater than or equal to the bandwidth requirements of the current mapped virtual link.
+
+Therefore, we delete temporarily all substrate links in the substrate network that do not have enough bandwidth for the corresponding virtual link to simplify the substrate network topology, reduce the computational complexity of the Dijkstra algorithm, and improve the performance of the link mapping.
 
 If not all virtual links of the given VNR are embedded successfully, the status of the substrate network is restored and the VN request is `rejected`.
 
@@ -528,7 +587,9 @@ The time Complexity of the proposed VNE-GNT algorithm can be calculated by addin
 - The time complexity of the node mapping stage:
 - The time complexity of the node mapping stage:
 
-Hence, we determine that its time complexity is $O(\max {1, 2})$
+Hence, we determine that its time complexity is $O(\max {1, 2})$.
+
+Overall, the algorithm can complete the mapping of virtual network requests in polynomial time.
 
 ---
 
