@@ -8,25 +8,42 @@ using namespace std;
 
 struct DSU
 {
-    vector<int> parent;
-    void init(int k)
+    vector<int> p, siz;
+
+    DSU(int n) : p(n), siz(n, 1)
     {
-        // 0 or 1-index ?
-        parent.resize(k + 1);
-        for (int i = 0; i <= k; ++i)
-            parent[i] = i;
+        iota(p.begin(), p.end(), 0);
     }
+
     int find(int x)
     {
-        return parent[x] == x ? x : parent[x] = find(parent[x]);
+        return p[x] == x ? x : p[x] = find(p[x]);
     }
-    void to_union(int x, int y)
-    {
-        parent[find(x)] = find(y);
-    }
+
     bool is_same(int x, int y)
     {
         return find(x) == find(y);
+    }
+
+    bool merge(int x, int y)
+    {
+        x = find(x);
+        y = find(y);
+
+        if (x == y)
+        {
+            return false;
+        }
+
+        siz[x] += siz[y];
+        p[y] = x;
+
+        return true;
+    }
+
+    int size(int x)
+    {
+        return siz[p[x]];
     }
 };
 ```
