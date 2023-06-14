@@ -95,6 +95,7 @@
 			"stop_token": "cpp",
 			"syncstream": "cpp",
 			"variant": "cpp"
-		}
+		},
+		"cph.general.onceMaintainerMessage": false
 	}
 }
